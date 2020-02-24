@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: jib-maven-taskrun
+spec:
+  serviceAccountName: build-bot
+  taskRef:
+    name: jib-maven
+  podTemplate:
+    volumes:
+      - name: jib-build-cache
+        persistentVolumeClaim:
+          claimName: jib-build-cache
+  inputs:
+    resources:
+      - name: source
+        resourceSpec:
+          type: git
+          params:
+            - name: url
+              value: # REPLACE WITH YOUR FORKED REPO URL https://github.com/markpollack/spring-sample-app
+            - name: revision
+              value: master
+    params:
+      - name: DIRECTORY
+        value: .
+      - name: CACHE
+        value: jib-build-cache
+  outputs:
+    resources:
+      - name: image
+        resourceSpec:
+          type: image
+          params:
+            - name: url
+              value: # REPLACE WITH YOUR DOCKER HUB URL markpollack/spring-sample-app:1.0.0
