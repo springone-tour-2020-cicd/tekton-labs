@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: mark-pr
+spec:
+  pipelineRef: 
+    name: build-pipeline
+  podTemplate:
+    volumes:
+    - name: jib-build-cache
+      persistentVolumeClaim:
+        claimName: jib-build-cache
+  serviceAccountName: 'build-bot'
+  resources:
+    - name: appSource
+      resourceRef: 
+        name: source
+    - name: appImage
+      resourceRef: 
+        name: image
+

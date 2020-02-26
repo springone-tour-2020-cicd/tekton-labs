@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: source
+spec:
+  type: git
+  params:
+  - name: url
+    value: https://github.com/markpollack/test-project
+  - name: revision
+    value: master
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: image
+spec:
+  type: image
+  params:
+  - name: url
+    value: markpollack/test-project:1.0.1

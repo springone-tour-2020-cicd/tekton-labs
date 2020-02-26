@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: source
+spec:
+  type: git
+  params:
+  - name: url
+    value: #REPLACE https://github.com/markpollack/spring-sample-app
+  - name: revision
+    value: master
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: image
+spec:
+  type: image
+  params:
+  - name: url
+    value:  # REPLACE markpollack/spring-sample-app:1.0.0
+    

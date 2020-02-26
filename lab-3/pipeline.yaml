@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: build-pipeline
+spec:
+  resources:
+  - name: appSource
+    type: git
+  - name: appImage
+    type: image
+  tasks:
+  - name: build-java-app
+    taskRef:
+      name: jib-maven
+    resources:
+      inputs: # bind pipeline resource to Task's input resource
+        - name: source # the name of the resource in the task
+          resource: appSource
+      outputs: # bind pipeline resource to Task's output resource
+        - name: image # the name of the resource in the task
+          resource: appImage
+    params:
+      - name: CACHE
+        value: jib-build-cache
